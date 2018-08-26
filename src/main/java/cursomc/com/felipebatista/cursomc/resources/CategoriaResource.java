@@ -26,4 +26,6 @@ public class CategoriaResource {
         return ResponseEntity.ok(service.buscar(id));
     }
 
+
+
 }
