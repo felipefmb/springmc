@@ -2,21 +2,22 @@ package cursomc.com.felipebatista.cursomc.domain.enums;
 
 import java.util.Arrays;
 
-public enum TipoCliente {
+public enum EstadoPagamento {
 
-    PESSOAFISICA(1, "Pessoa Física"),
-    PESSOAJURIDICA(2, "Pessoa Jurídica");
+    PENDENTE(1,"Pendente"),
+    QUITADO(2, "Quitado"),
+    CANCELADO(3, "Cancelado");
 
     private Integer codigo;
     private String descricao;
 
-    private TipoCliente(Integer codigo, String descricao) {
+    private EstadoPagamento(Integer codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
     }
 
-    public static TipoCliente toEnum(Integer id) {
-        return Arrays.asList(TipoCliente.values()).stream()
+    public static EstadoPagamento toEnum(Integer id) {
+        return Arrays.asList(EstadoPagamento.values()).stream()
                 .filter(f -> f.getCodigo().equals(id))
                 .findFirst().orElse(null);
     }
@@ -28,7 +29,4 @@ public enum TipoCliente {
     public String getDescricao() {
         return descricao;
     }
-
 }
-
-

@@ -20,12 +20,15 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipo;
 
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos = new ArrayList<>();
+
     @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
 
     @ElementCollection
-    @CollectionTable(name="TELEFONE")
+    @CollectionTable(name = "TELEFONE")
     private Set<String> telefones = new HashSet<>();
 
     public Cliente() {
@@ -88,6 +91,11 @@ public class Cliente implements Serializable {
         return this;
     }
 
+    public Cliente setTipo(Integer tipo) {
+        this.tipo = tipo;
+        return this;
+    }
+
     public List<Endereco> getEnderecos() {
         return enderecos;
     }
@@ -103,6 +111,15 @@ public class Cliente implements Serializable {
 
     public Cliente setTelefones(Set<String> telefones) {
         this.telefones = telefones;
+        return this;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public Cliente setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
         return this;
     }
 
@@ -128,6 +145,7 @@ public class Cliente implements Serializable {
                 ", email='" + email + '\'' +
                 ", cpfOuCnpj='" + cpfOuCnpj + '\'' +
                 ", tipo=" + tipo +
+                ", pedidos=" + pedidos +
                 ", enderecos=" + enderecos +
                 ", telefones=" + telefones +
                 '}';
