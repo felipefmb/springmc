@@ -14,7 +14,7 @@ public class EnderecoService {
     @Autowired
     private EnderecoRepository repository;
 
-    public Endereco buscar(Integer id) {
+    public Endereco find(Integer id) {
         return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! ID: " + id + ", Tipo: " + Endereco.class.getName()));
     }
 

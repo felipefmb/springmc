@@ -18,7 +18,7 @@ public class CategoriaResource {
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public ResponseEntity<?> listar(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok().body(service.buscar(id));
+        return ResponseEntity.ok().body(service.find(id));
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -30,6 +30,12 @@ public class CategoriaResource {
                 .buildAndExpand(obj.getId())
                 .toUri();
         return ResponseEntity.created(uri).build();
+    }
+    
+    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
