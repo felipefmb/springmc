@@ -1,9 +1,7 @@
 package cursomc.com.felipebatista.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import cursomc.com.felipebatista.cursomc.domain.enums.TipoCliente;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -21,11 +19,10 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipo;
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
 

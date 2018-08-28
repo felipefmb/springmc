@@ -1,7 +1,6 @@
 package cursomc.com.felipebatista.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class Estado implements Serializable {
     private String nome;
 
     @OneToMany(mappedBy = "estado")
-    @JsonBackReference
+    @JsonIgnore
     private List<Cidade> cidades = new ArrayList<>();
 
     public Estado() {
