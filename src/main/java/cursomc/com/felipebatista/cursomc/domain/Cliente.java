@@ -1,5 +1,6 @@
 package cursomc.com.felipebatista.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import cursomc.com.felipebatista.cursomc.domain.enums.TipoCliente;
 
@@ -20,6 +21,7 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipo;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 
