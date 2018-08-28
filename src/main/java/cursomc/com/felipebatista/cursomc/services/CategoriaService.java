@@ -6,8 +6,6 @@ import cursomc.com.felipebatista.cursomc.services.exceptions.ObjectNotFoundExcep
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class CategoriaService {
 
@@ -16,6 +14,11 @@ public class CategoriaService {
 
     public Categoria buscar(Integer id) {
         return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! ID: " + id + ", Tipo: " + Categoria.class.getName()));
+    }
+
+    public Categoria insert(Categoria obj) {
+        obj.setId(null);
+        return repository.save(obj);
     }
 
 }
