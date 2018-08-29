@@ -10,7 +10,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner {
@@ -50,6 +52,11 @@ public class Application implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Categoria cat1 = new Categoria(null, "Informática");
         Categoria cat2 = new Categoria(null, "Escritório");
+        List<Categoria> listaCategoria = new ArrayList<>();
+        for(int i = 50;i >= 0; i-- ) {
+            listaCategoria.add(new Categoria(null, "Categoria " + i));
+        }
+
 
         Produto p1 = new Produto(null, "Computador", 2000.00);
         Produto p2 = new Produto(null, "Impressora", 800.00);
@@ -62,6 +69,7 @@ public class Application implements CommandLineRunner {
         p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
         p3.getCategorias().addAll(Arrays.asList(cat1));
 
+        categoriaRepository.saveAll(listaCategoria);
         categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
         produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 
