@@ -1,6 +1,7 @@
 package cursomc.com.felipebatista.cursomc.services;
 
 import cursomc.com.felipebatista.cursomc.domain.Categoria;
+import cursomc.com.felipebatista.cursomc.dto.CategoriaDTO;
 import cursomc.com.felipebatista.cursomc.repository.CategoriaRepository;
 import cursomc.com.felipebatista.cursomc.services.exceptions.DataIntegrityException;
 import cursomc.com.felipebatista.cursomc.services.exceptions.ObjectNotFoundException;
@@ -47,5 +48,15 @@ public class CategoriaService {
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction.toUpperCase()), orderBy);
         return repository.findAll(pageRequest);
+    }
+
+    public Categoria fromDTO(CategoriaDTO dto) {
+        return new Categoria(dto.getId(), dto.getNome());
+    }
+
+    public void update(Integer id, Categoria obj) {
+        find(id);
+        obj.setId(id);
+        repository.save(obj);
     }
 }
