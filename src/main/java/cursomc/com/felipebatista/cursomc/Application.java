@@ -13,9 +13,29 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.WebContentInterceptor;
 
+@Configuration
+@EnableCaching
+@EnableFeignClients
 @SpringBootApplication
-public class Application implements CommandLineRunner {
+public class Application implements CommandLineRunner, WebMvcConfigurer {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
@@ -53,10 +73,9 @@ public class Application implements CommandLineRunner {
         Categoria cat1 = new Categoria(null, "Informática");
         Categoria cat2 = new Categoria(null, "Escritório");
         List<Categoria> listaCategoria = new ArrayList<>();
-        for(int i = 50;i >= 0; i-- ) {
+        for (int i = 50; i >= 0; i--) {
             listaCategoria.add(new Categoria(null, "Categoria " + i));
         }
-
 
         Produto p1 = new Produto(null, "Computador", 2000.00);
         Produto p2 = new Produto(null, "Impressora", 800.00);
@@ -85,7 +104,6 @@ public class Application implements CommandLineRunner {
 
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
-
 
         Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "56488653920", TipoCliente.PESSOAFISICA);
         cli1.getTelefones().addAll(Arrays.asList("34325958", "999368282"));
@@ -124,5 +142,38 @@ public class Application implements CommandLineRunner {
 
         itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("HEAD,GET,POST,PUT,DELETE,PATCH,OPTIONS".split(","))
+                .allowedHeaders(("Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,"
+                        + "Access-Control-Request-Headers,App-Context,App-Links,Authorization,"
+                        + "User-Access,Filter-Encoded").split(","));
+    }
+
+    @Bean
+    public DispatcherServlet dispatcherServlet() {
+        DispatcherServlet ds = new DispatcherServlet();
+        ds.setThrowExceptionIfNoHandlerFound(true);
+        ds.setDetectAllHandlerExceptionResolvers(true);
+        return ds;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new WebContentInterceptor() {
+
+            @Override
+            public boolean preHandle(@Nullable HttpServletRequest request, @Nullable HttpServletResponse response,
+                    Object handler) throws ServletException {
+                if (response != null && StringUtils.isEmpty(response.getContentType())) {
+                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                }
+                return super.preHandle(request, response, handler);
+            }
+        });
     }
 }
